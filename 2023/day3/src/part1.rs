@@ -1,6 +1,8 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+use day3::{is_number,is_symbol};
+
 pub fn calculate(file: &File) -> Option<usize> {
 
     let file = BufReader::new(file);
@@ -14,7 +16,7 @@ pub fn calculate(file: &File) -> Option<usize> {
     }
     let mut sum = 0;
 
-    'lines: for (line_ind, line) in lines.iter().enumerate() {
+    for (line_ind, line) in lines.iter().enumerate() {
         
         let line = line.trim().as_bytes().to_vec();
         let mut buf: Vec<u8> = vec![];
@@ -86,7 +88,6 @@ pub fn calculate(file: &File) -> Option<usize> {
         if num_found && buf.len() > 0 {
             let num = parse_num(&buf);
             sum += num;
-            num_found = false;
         }
         buf.clear();
     }
@@ -106,14 +107,3 @@ fn parse_num(buf: &Vec<u8>) -> usize {
     return count;
 }
 
-pub fn is_number(val: u8) -> bool {
-    val >= b'0' && val <= b'9'
-}
-
-pub fn is_symbol(val: u8) -> bool {
-    !is_number(val) && !is_period(val)
-}
-
-pub fn is_period(val: u8) -> bool {
-    val == b'.'
-}
